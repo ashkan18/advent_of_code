@@ -1,6 +1,6 @@
 defmodule Day2Ex1 do
   def run do
-    readInput
+    readInput()
      |> Enum.map(&find_counts_for_code(&1))
      |> reduce_counts
      |> calculate_result
@@ -11,9 +11,10 @@ defmodule Day2Ex1 do
   def find_counts_for_code(code) do
     code
     |> String.graphemes
-    |> Enum.chunk_by(fn arg -> arg end)
-    |> Enum.map(fn arg -> length(arg) end)
-    |> Enum.reject(fn arg -> arg < 2 end)
+    |> Enum.group_by(fn arg -> arg end)
+    |> Map.values
+    |> Enum.map(fn list -> length(list) end)
+    |> Enum.reject(fn total -> total < 2 || total > 3 end)
     |> Enum.uniq
   end
 

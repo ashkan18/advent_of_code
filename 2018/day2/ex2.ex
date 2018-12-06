@@ -2,38 +2,32 @@ defmodule Day2Ex2 do
   def run do
     readInput()
      |> Enum.sort
-     |> find_closest()
+     |> find_correct()
   end
 
-  def readInput, do: File.open!("input") |> IO.stream(:line)
+  defp readInput, do: File.open!("input") |> IO.stream(:line)
 
-  def find_closest(list) do
-    list
-    |> Enum.reduce_while([], fn code, prev_codes ->
-          case find_in_list(code, list -- prev_codes) do
-            {:found, {first, second}} ->
-              IO.puts("Correct box ids: #{first} , #{second}")
-              {:halt, {first, second}}
-            _ -> {:cont, prev_codes ++ [code] }
-          end
-        end)
-  end
-
-  def find_in_list(_item, []), do: false
-  def find_in_list(item, list) do
-    [head|tail] = list
-    if diff_is_one?(item, head), do: {:found, {item, head}}, else: find_in_list(item, tail)
-  end
-
-
-  def diff_is_one?(a, b) do
-    case diff_count(a,b) do
-      1 -> {:found, {a, b}}
-      _ -> false
+  # Find correct box ids from from a list of box ids
+  defp find_correct([]), do: IO.puts("Could not find correct boxes.")
+  defp find_correct(box_ids) do
+    [head|tail] = box_ids
+    case(find_in_list(head, tail)) do
+      {:found, {box1, box2}} -> IO.puts("Correct box ids: #{box1} , #{box2}")
+      _ -> find_correct(tail)
     end
   end
 
-  def diff_count(a, b) do
+  # Find possible corrects for this box id
+  defp find_in_list(_box_id, []), do: false
+  defp find_in_list(box_id, box_ids) do
+    [head|tail] = box_ids
+    if diff_is_one?(box_id, head), do: {:found, {box_id, head}}, else: find_in_list(box_id, tail)
+  end
+
+
+  defp diff_is_one?(a, b), do: diff_count(a,b) == 1
+
+  defp diff_count(a, b) do
     [a, b]
     |> Enum.map(&String.graphemes/1)
     |> List.zip()

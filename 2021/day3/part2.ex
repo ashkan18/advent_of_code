@@ -1,4 +1,4 @@
-defmodule Solution2 do
+defmodule Part2 do
   def run do
     oxygen = read_input()
       |> oxygen(0)
@@ -56,4 +56,4 @@ defmodule Solution2 do
   end
 end
 
-Solution2.run()
+Part2.run()

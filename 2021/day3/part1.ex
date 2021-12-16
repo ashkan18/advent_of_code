@@ -1,4 +1,4 @@
-defmodule Day3 do
+defmodule Part1 do
 
   def run do
     {gamma, epsilon} = read_input()
@@ -47,4 +47,4 @@ defmodule Day3 do
 end
 
 
-Day3.run()
+Part1.run()

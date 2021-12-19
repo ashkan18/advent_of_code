@@ -63,8 +63,8 @@ defmodule Board do
   end
 end
 
-defmodule Part1 do
-  def run do
+defmodule Reader do
+  def read_input do
     [draw_str | data] = File.open!("input")
     |> IO.stream(:line)
     |> Stream.map(&String.trim/1)
@@ -76,6 +76,14 @@ defmodule Part1 do
       |> Enum.chunk_every(5)
       |> Enum.map(fn rows -> Board.new(rows) end)
 
+    {draw, boards}
+  end
+end
+
+defmodule Part1 do
+  import Reader, only: [read_input: 0]
+  def run do
+    {draw, boards} = read_input()
     Enum.reduce_while(draw, boards, fn read, boards ->
       boards = Enum.map(boards, &Board.mark(&1, read))
       if board = Enum.find(boards, &Board.won?/1) do
@@ -93,4 +101,32 @@ defmodule Part1 do
   end
 end
 
+
+defmodule Part2 do
+  import Reader, only: [read_input: 0]
+  def run do
+    {draw, boards} = read_input()
+    Enum.reduce_while(draw, boards, fn read, boards ->
+      boards = boards
+        |> Enum.map(&Board.mark(&1, read))
+
+      case Enum.reject(boards, &Board.won?/1) do
+        [] ->
+          [board] = boards
+          {:halt, {read, board}}
+        boards ->
+          {:cont, boards}
+        end
+    end)
+    |> case do
+      {number, board} ->
+        Board.winning_score(number, board) |> IO.inspect()
+      {_boards} ->
+        IO.puts("didn't find")
+    end
+  end
+end
+
 Part1.run()
+
+Part2.run()

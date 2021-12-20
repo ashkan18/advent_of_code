@@ -48,6 +48,7 @@ defmodule Solution do
       Map.update(current_map, "#{i}_#{j}", 1, &(&1 + 1))
     end)
   end
+
   def check_direction(_, current_map), do: current_map
 end
 

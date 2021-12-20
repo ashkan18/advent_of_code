@@ -128,5 +128,4 @@ defmodule Part2 do
 end
 
 Part1.run()
-
 Part2.run()

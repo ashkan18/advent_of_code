@@ -1,9 +1,9 @@
 defmodule Solution do
   def run do
     input = read_input()
-    # input
-    # |> part1()
-    # |> IO.inspect(label: :part1)
+    input
+    |> part1()
+    |> IO.inspect(label: :part1)
 
     input
     |> part2()
@@ -17,7 +17,6 @@ defmodule Solution do
         byte_size(item) in [2, 4, 3, 7]
       end)
     end)
-    |> IO.inspect()
     |> Enum.sum()
   end
 

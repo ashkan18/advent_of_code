@@ -1,10 +1,15 @@
 defmodule Day9.Part1 do
   def run do
-    results =
-      read_input()
+    # in this approach we only go over 3 lines at a time with checking the line in the middle
+    #      previous line
+    #  --> current line
+    #      next line
+    # for this to work properly for last line, we need to add a nil row at the end so we go over last line properly
+    input = read_input() ++ [nil]
+    input
       |> Enum.reduce(%{low_points: [], previous_line: nil, current_line: nil}, fn next_line, %{ previous_line: previous_line, current_line: current_line, low_points: low_points} ->
         # we always process last_line considering the line before and current line
-        # we have to only treat first and last line a bit more especially
+        # we have to only treat last line a bit more especially by reading it separately in the end
         new_low_points = process_low_points(previous_line, current_line, next_line)
 
         %{
@@ -13,12 +18,9 @@ defmodule Day9.Part1 do
           current_line: next_line
         }
       end)
-
-    last_line_results = process_low_points(results.previous_line, results.current_line, nil)
-
-    (results.low_points ++ last_line_results)
-    |> Enum.map(&(&1 + 1))
-    |> Enum.sum()
+      |> Map.get(:low_points)
+      |> Enum.map(&(&1 + 1))
+      |> Enum.sum()
   end
 
   defp process_low_points(previous_line, current_line, next_line) when not is_nil(current_line) do
@@ -43,9 +45,9 @@ defmodule Day9.Part1 do
   defp read_input do
     File.open!("input")
     |> IO.stream(:line)
-    |> Stream.map(&String.trim/1)
-    |> Stream.map(&String.graphemes/1)
-    |> Stream.map(fn row -> Enum.map(row, &String.to_integer/1) end)
+    |> Enum.map(&String.trim/1)
+    |> Enum.map(&String.graphemes/1)
+    |> Enum.map(fn row -> Enum.map(row, &String.to_integer/1) end)
   end
 end
 

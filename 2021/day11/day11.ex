@@ -6,7 +6,6 @@ defmodule Day11 do
       {new_grid, flashed} = analyze_step(Map.keys(grid), grid, MapSet.new([]))
       {new_grid, flashes ++ [flashed]}
     end)
-    # get flashes
     |> elem(1)
     |> Enum.map(fn step_flashes -> MapSet.size(step_flashes) end)
     |> Enum.sum()

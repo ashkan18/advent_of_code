@@ -1,5 +1,5 @@
-defmodule Day12 do
-  def part1 do
+defmodule Day12.Part1 do
+  def run do
     graph = read_input()
     traverse(graph, graph["start"], ["start"])
     |> Enum.count()
@@ -41,5 +41,5 @@ defmodule Day12 do
   end
 end
 
-Day12.part1()
+Day12.Part1.run()
   |> IO.inspect(label: :part1)

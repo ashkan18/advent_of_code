@@ -1,28 +1,29 @@
 defmodule Day12 do
   def part1 do
     graph = read_input()
-    traverse(graph, graph["start"], ["start"], [])
+    traverse(graph, graph["start"], ["start"])
+    |> Enum.count()
   end
 
-  defp traverse(_graph, [], _visited, current_paths), do: current_paths
+  defp traverse(_graph, [], _visited), do: []
 
-  defp traverse(graph, ["end" | rest], visited, current_paths),
-    do: traverse(graph, rest, visited, current_paths ++ [visited ++ ["end"]])
+  defp traverse(graph, ["end" | rest], visited),
+    do: [visited ++ ["end"]] ++ traverse(graph, rest, visited)
 
-  defp traverse(graph, [check | rest], visited, current_paths) do
+  defp traverse(graph, [check | rest], visited) do
     paths =
       cond do
         check == "start" ->
-          current_paths
+          []
 
         lowercased?(check) and check in visited ->
-          current_paths
+          []
 
         true ->
-          traverse(graph, graph[check], visited ++ [check], current_paths)
+          traverse(graph, graph[check], visited ++ [check])
       end
 
-    traverse(graph, rest, visited, paths)
+    paths ++ traverse(graph, rest, visited)
   end
 
   defp lowercased?(cave), do: String.downcase(cave, :ascii) == cave
@@ -40,4 +41,5 @@ defmodule Day12 do
   end
 end
 
-Day12.part1() |> IO.inspect() |> Enum.count() |> IO.inspect()
+Day12.part1()
+  |> IO.inspect(label: :part1)

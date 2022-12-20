@@ -8,10 +8,18 @@ defmodule Day14 do
         process_input(current_result, mapping)
       end)
       |> Enum.frequencies()
-      |> Enum.sort_by(fn {a, b} -> b end)
-      |> Enum.min_max_by(fn {x, y} -> y end)
+      |> Enum.sort_by(fn {_a, b} -> b end)
+      |> Enum.min_max_by(fn {_x, y} -> y end)
 
     abs(max - min)
+  end
+
+  def part2 do
+    {input, mapping} = read_input()
+    frequencies = input
+      |> String.graphemes()
+      |> Enum.chunk_every(2, 1, :discard)
+      |> Enum.frequencies()
   end
 
   def process_input([a | rest], _mapping) when rest == [], do: [a]
@@ -40,4 +48,4 @@ defmodule Day14 do
   end
 end
 
-Day14.part1() |> IO.inspect()
+Day14.part2() |> IO.inspect()

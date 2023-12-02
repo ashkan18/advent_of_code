@@ -25,7 +25,7 @@ defmodule P1 do
   end
 
   defp first_left(a), do: find_first_digit(String.codepoints(a))
-  defp first_right(a), do: first_left(String.codepoints(String.reverse(a)))
+  defp first_right(a), do: first_left(String.reverse(a))
 
   defp digit_of(a,b), do: String.to_integer("#{a}#{b}")
 end
